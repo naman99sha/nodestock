@@ -30,11 +30,16 @@ app.get('/', (req, res) => {
     })
 });
 
-/*
-app.post('/', (req, res) => {
 
+app.post('/', (req, res) => {
+    console.log(res)
+    call_api(function(doneAPI) {
+        res.render('home', {
+            stock: doneAPI
+        });
+    })
 })
-*/
+
 app.get('/about', (req, res) => {
     res.render('about');
 });
