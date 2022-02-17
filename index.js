@@ -6,10 +6,10 @@ import { engine } from 'express-handlebars';
 import request from 'request';
 
 
-function call_api(){
+function call_api(finishedAPI){
     request('https://cloud.iexapis.com/stable/stock/fb/quote?token=pk_3f83a57b74674152865e2f4a1534ab2a', {json: true}, (err, res, body) => {
         if (err) {return console.log(err)}
-        if (res.statusCode === 200) {return body;}  
+        if (res.statusCode === 200) {finishedAPI(body);}  
     })
 }
 
@@ -23,10 +23,11 @@ app.set('view engine', 'handlebars');
 app.set('views', './views');
 
 app.get('/', (req, res) => {
-    const api = call_api()
-    res.render('home', {
-        stock: api
-    });
+    call_api(function(doneAPI) {
+        res.render('home', {
+            stock: doneAPI
+        });
+    })
 });
 
 app.get('/about', (req, res) => {
